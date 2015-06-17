@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 public class EmployeeTest {
 
     List<Employee> emp;
-    Locale locale=Locale.US;
+    Locale locale = Locale.US;
 
     public Locale getLocale() {
         return locale;
@@ -78,17 +78,22 @@ public class EmployeeTest {
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         switch (choice) {
-            case 1:locale=new Locale("vi","VN");break;
-            case 2:locale=new Locale("en","US");break;
+            case 1:
+                locale = new Locale("vi", "VN");
+                break;
+            case 2:
+                locale = new Locale("en", "US");
+                break;
         }
     }
     //database
-    SingleDBConn s=new SingleDBConn();
-    PreparedStatement pre=null;
-    String sql_add="insert into `empTable`(`name`,`address`,`phone`,`email`,`yob`) values (?,?,?,?,?)";
-    public void WriteToDB(){
+    SingleDBConn s = new SingleDBConn();
+    PreparedStatement pre = null;
+    String sql_add = "insert into `empTable`(`name`,`address`,`phone`,`email`,`yob`) values (?,?,?,?,?)";
+
+    public void WriteToDB() {
         try {
-            pre=s.getConn().prepareStatement(sql_add);
+            pre = s.getConn().prepareStatement(sql_add);
             for (Employee emp1 : emp) {
                 pre.setString(1, emp1.getName());
                 pre.setString(2, emp1.getAddress());
@@ -101,25 +106,26 @@ public class EmployeeTest {
             System.out.println("Complete!");
         } catch (SQLException ex) {
             System.out.println("SQL Err!");
-        }catch(NullPointerException n){
+        } catch (NullPointerException n) {
             System.out.println("Ban phai nhap trc ghi ,hien thoi mang ko du lieu");
         }
     }
-    String sql_read="Select * from `empTable` where 1";
-    ResultSet result=null;
-    public void ReadFromDB(){
+    String sql_read = "Select * from `empTable` where 1";
+    ResultSet result = null;
+
+    public void ReadFromDB() {
         try {
-            result=pre.executeQuery(sql_read);
-            while(result.next()){
-                System.out.println(result.getInt("id")+"-"+result.getString("name")+"-"+result.getString("address")+"-"
-                +result.getString("phone")+"-"+result.getString("email")+"-"+result.getInt("yob")
+            result = pre.executeQuery(sql_read);
+            while (result.next()) {
+                System.out.println(result.getInt("id") + "-" + result.getString("name") + "-" + result.getString("address") + "-"
+                        + result.getString("phone") + "-" + result.getString("email") + "-" + result.getInt("yob")
                 );
             }
         } catch (SQLException ex) {
             System.err.println("Cant Read");
-        }catch(NullPointerException n){
+        } catch (NullPointerException n) {
             System.out.println("ko co du lieu");
         }
-        
+
     }
 }
